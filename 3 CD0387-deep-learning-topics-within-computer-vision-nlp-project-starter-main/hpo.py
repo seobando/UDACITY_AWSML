@@ -115,12 +115,13 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # Specify all the hyperparameters you need to use to train your model
-    parser.add_argument('--data_dir', type=str, default='data', help='Directory containing the dataset')
+    parser.add_argument('--data_dir', type=str, default= default=os.environ['SM_CHANNEL_TRAINING']', help='Directory containing the dataset')
+    parser.add_argument('--model_path', type=str, default=os.environ['SM_MODEL_DIR'], help='Path to save the trained model')
     parser.add_argument('--batch_size', type=int, default=32, help='Batch size for training')
     parser.add_argument('--epochs', type=int, default=5, help='Number of epochs to train')
     parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')
-    parser.add_argument('--num_classes', type=int, default=120, help='Number of dog breeds/classes')
-    parser.add_argument('--model_path', type=str, default='model.pth', help='Path to save the trained model')
+    parser.add_argument('--num_classes', type=int, default=133, help='Number of dog breeds/classes')
+    
     
     args = parser.parse_args()
     
