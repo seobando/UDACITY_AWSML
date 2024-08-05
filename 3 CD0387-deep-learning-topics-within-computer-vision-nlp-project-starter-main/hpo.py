@@ -1,6 +1,4 @@
-# Import your dependencies.
-# For instance, below are some dependencies you might need if you are using Pytorch
-import numpy as np
+import argparse
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -8,7 +6,10 @@ import torchvision
 import torchvision.models as models
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
-import argparse
+
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+
 
 def test(model, test_loader, criterion):
     '''
@@ -44,16 +45,12 @@ def train(model, train_loader, criterion, optimizer, epochs=5):
     for epoch in range(epochs):
         running_loss = 0.0
         for i, (inputs, labels) in enumerate(train_loader, 0):
-            # Zero the parameter gradients
             optimizer.zero_grad()
-
-            # Forward + backward + optimize
             outputs = model(inputs)
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
             
-            # Print statistics
             running_loss += loss.item()
             if i % 2000 == 1999:  # Print every 2000 mini-batches
                 print(f'[Epoch {epoch + 1}, Batch {i + 1}] loss: {running_loss / 2000:.3f}')
@@ -61,7 +58,7 @@ def train(model, train_loader, criterion, optimizer, epochs=5):
 
     print('Finished Training')
     return model
-    
+
 def net(num_classes):
     '''
     Function that initializes your model
@@ -72,57 +69,50 @@ def net(num_classes):
     model.fc = nn.Linear(num_ftrs, num_classes)
     return model
 
-def create_data_loaders(data_dir, batch_size):
+def create_data_loaders(train_dir, val_dir, batch_size):
     '''
     Function to create data loaders for training and testing datasets
     '''
-    transform = transforms.Compose(
-        [transforms.Resize((224, 224)),
-         transforms.ToTensor(),
-         transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))])
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    ])
 
-    train_dataset = torchvision.datasets.ImageFolder(root=f'{data_dir}/train', transform=transform)
+    train_dataset = torchvision.datasets.ImageFolder(root=train_dir, transform=transform)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 
-    test_dataset = torchvision.datasets.ImageFolder(root=f'{data_dir}/test', transform=transform)
-    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+    val_dataset = torchvision.datasets.ImageFolder(root=val_dir, transform=transform)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
-    return train_loader, test_loader
+    return train_loader, val_loader
 
 def main(args):
     '''
     Main function to initialize model, loss, optimizer, train and test the model
     '''
-    # Initialize a model by calling the net function
     model = net(args.num_classes)
-    
-    # Create your loss and optimizer
     loss_criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=args.lr)
 
-    # Create data loaders
-    train_loader, test_loader = create_data_loaders(args.data_dir, args.batch_size)
+    train_loader, val_loader = create_data_loaders(args.train_dir, args.val_dir, args.batch_size)
 
-    # Call the train function to start training your model
     model = train(model, train_loader, loss_criterion, optimizer, args.epochs)
 
-    # Test the model to see its accuracy
-    test(model, test_loader, loss_criterion)
+    _, accuracy = test(model, val_loader, loss_criterion)
 
     # Save the trained model
     torch.save(model.state_dict(), args.model_path)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    # Specify all the hyperparameters you need to use to train your model
-    parser.add_argument('--data_dir', type=str, default= default=os.environ['SM_CHANNEL_TRAINING']', help='Directory containing the dataset')
-    parser.add_argument('--model_path', type=str, default=os.environ['SM_MODEL_DIR'], help='Path to save the trained model')
-    parser.add_argument('--batch_size', type=int, default=32, help='Batch size for training')
+    parser.add_argument('--train_dir', type=str, default='/opt/ml/input/data/training', help='Path to training data')
+    parser.add_argument('--val_dir', type=str, default='/opt/ml/input/data/validation', help='Path to validation data')
+    parser.add_argument('--model_path', type=str, default='/opt/ml/model/model.pth', help='Path to save the trained model')
+    parser.add_argument('--batch_size', type=int, default=64, help='Batch size for training')
     parser.add_argument('--epochs', type=int, default=5, help='Number of epochs to train')
     parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')
-    parser.add_argument('--num_classes', type=int, default=133, help='Number of dog breeds/classes')
-    
-    
+    parser.add_argument('--num_classes', type=int, default=133, help='Number of classes')
+
     args = parser.parse_args()
-    
     main(args)
