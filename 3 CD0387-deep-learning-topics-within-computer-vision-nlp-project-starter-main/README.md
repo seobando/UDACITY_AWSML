@@ -25,9 +25,13 @@ Remember that your README should:
 
 ## Debugging and Profiling
 
+These are the logs for the training process:
+
 ![TrainingJobs](./ScreenShots/TranningLogs/TrainingJobCompleted.png)
 
 ![TrainingMetrics](./ScreenShots/TranningLogs/dog-pytorch-2024-08-05-23-57-41-000.png)
+
+There are the results of the 2 tunning jobs:
 
 ![TunningJobs](./ScreenShots/TunnerLogs/HyperparametersTuningJobs.png)
 
@@ -38,8 +42,6 @@ Remember that your README should:
 ### Results
 
 ![CrossEntropyLoss](./ScreenShots/CrossEntropyLoss.png)
-
-
 
 ## Model Deployment
 
