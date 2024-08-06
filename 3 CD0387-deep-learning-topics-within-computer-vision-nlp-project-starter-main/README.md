@@ -41,7 +41,13 @@ There are the results of the 2 tunning jobs:
 
 ### Results
 
+This is the Cross entropy loss:
+
 ![CrossEntropyLoss](./ScreenShots/CrossEntropyLoss.png)
+
+The profile-report could be found here: 
+
+[profile-report](https://github.com/seobando/UDACITY_AWSML/blob/main/3%20CD0387-deep-learning-topics-within-computer-vision-nlp-project-starter-main/profile-report.pdf)
 
 ## Model Deployment
 
