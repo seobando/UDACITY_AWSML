@@ -24,18 +24,23 @@ Remember that your README should:
 - Retrieve the best best hyperparameters from all your training jobs
 
 ## Debugging and Profiling
-**TODO**: Give an overview of how you performed model debugging and profiling in Sagemaker
+
+![TrainingJobs](./ScreenShots/TranningLogs/TrainingJobCompleted.png)
+
+![TrainingMetrics](./ScreenShots/TranningLogs/dog-pytorch-2024-08-05-23-57-41-000.png)
+
+![TunningJobs](./ScreenShots/TunnerLogs/HyperparametersTuningJobs.png)
+
+![TunningMetric1](./ScreenShots/TunnerLogs/pytorch-training-240805-2136-001-410838b8.png)
+
+![TunningMetric2](./ScreenShots/TunnerLogs/pytorch-training-240805-2136-002-1ea47b7f.png)
 
 ### Results
-**TODO**: What are the results/insights did you get by profiling/debugging your model?
 
-**TODO** Remember to provide the profiler html/pdf file in your submission.
+![CrossEntropyLoss](./ScreenShots/CrossEntropyLoss.png)
+
 
 
 ## Model Deployment
-**TODO**: Give an overview of the deployed model and instructions on how to query the endpoint with a sample input.
 
-**TODO** Remember to provide a screenshot of the deployed active endpoint in Sagemaker.
-
-## Standout Suggestions
-**TODO (Optional):** This is where you can provide information about any standout suggestions that you have attempted.
+![EndPoint](./ScreenShots/EndPoint.png)
