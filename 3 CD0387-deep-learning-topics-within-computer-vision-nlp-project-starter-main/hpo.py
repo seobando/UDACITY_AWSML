@@ -1,5 +1,4 @@
 
-import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -7,26 +6,20 @@ import torchvision
 import torchvision.models as models
 import torchvision.transforms as transforms
 
-import copy
 import argparse
 import os
 import logging
 import sys
-from tqdm import tqdm
+
 from PIL import ImageFile
-
-import smdebug.pytorch as smd
-
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 logger=logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
-def test(model, test_loader, criterion, hook):
+def test(model, test_loader, criterion):
     model.eval()
-    hook.set_mode(smd.modes.EVAL) # Debugger hook mode = EVAL
-    
     running_loss=0
     running_corrects=0
     
@@ -43,7 +36,7 @@ def test(model, test_loader, criterion, hook):
     logger.info(f"Testing Loss: {total_loss}")
     logger.info(f"Testing Accuracy: {total_acc}")
 
-def train(model, train_loader, validation_loader, criterion, optimizer, hook):
+def train(model, train_loader, validation_loader, criterion, optimizer):
     epochs=20
     best_loss=1e6
     image_dataset={'train':train_loader, 'valid':validation_loader}
@@ -54,11 +47,8 @@ def train(model, train_loader, validation_loader, criterion, optimizer, hook):
         for phase in ['train', 'valid']:
             if phase=='train':
                 model.train()
-                hook.set_mode(smd.modes.TRAIN)
             else:
                 model.eval()
-                hook.set_mode(smd.modes.EVAL)
-                
             running_loss = 0.0
             running_corrects = 0
 
@@ -139,22 +129,16 @@ def main(args):
     logger.info(f'Data Paths: {args.data}')
     
     train_loader, test_loader, validation_loader=create_data_loaders(args.data, args.batch_size)
-    
     model=net()
     
-    hook = smd.Hook.create_from_json_file()
-    hook.register_hook(model)
-    
     criterion = nn.CrossEntropyLoss(ignore_index=133)
-    hook.register_loss(criterion)
-    
     optimizer = optim.Adam(model.fc.parameters(), lr=args.learning_rate)
     
     logger.info("Starting Model Training")
-    model=train(model, train_loader, validation_loader, criterion, optimizer, hook)
+    model=train(model, train_loader, validation_loader, criterion, optimizer)
     
     logger.info("Testing Model")
-    test(model, test_loader, criterion, hook)
+    test(model, test_loader, criterion)
     
     logger.info("Saving Model")
     torch.save(model.cpu().state_dict(), os.path.join(args.model_dir, "model.pth"))
