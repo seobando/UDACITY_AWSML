@@ -1,5 +1,6 @@
 # Project: Operationalizing an AWS ML Project
 
+This project was about testing different approaches to traing and serve ml model in AWS
 
 
 ## Training and deployment
@@ -58,7 +59,7 @@ I didn't want to invest to much time seting up the scope of the access for the l
 
 - Concurrency configuration for dummy version:
 
-![image](screenshots\8-Concurrency.png)
+![image](screenshots\8-Concurrency-and-auto-scaling.png)
 
 - About Lambda function concurrency configuration:
  
