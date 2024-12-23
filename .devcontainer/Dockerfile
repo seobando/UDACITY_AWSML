@@ -25,15 +25,6 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# Install Python packages
-COPY requirements.txt* /tmp/requirements.txt
-RUN if [ -f /tmp/requirements.txt ]; then \
-       pip install --upgrade pip && \
-       pip install --no-cache-dir -r /tmp/requirements.txt; \
-   else \
-       pip install --upgrade pip; \
-   fi
-
 # Set up working directory
 WORKDIR /workspace
 
