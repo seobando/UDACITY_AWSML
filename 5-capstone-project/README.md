@@ -168,7 +168,7 @@ Algorithms and techniques used in the project are thoroughly discussed and prope
 
 For recomendation system a powerful algorithm would be the funkSVD, the one used in the Netflix 1 MM competition, that based on latent features and rating is able to suggest movies, even for N/A values which is kind of a problem in matrix operations.
 
-The algorithm can be found on [funkSVD](notebooks/modeling/funkSVD.ipynb) and the training to build recomendation systems comes from the "Experimental Design and Recommendations" offered by Udacity.
+The algorithm can be found on [funkSVD](notebooks/modeling/funkSVD.ipynb) and the training to build recomendation systems comes from the "Experimental Design and Recommendations" course offered by Udacity.
 
 ## Benchmark
 
