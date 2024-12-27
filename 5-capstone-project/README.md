@@ -158,7 +158,7 @@ $score = (\text{number of offers viewed}) / (\text{number of offers received})$
 And by estimating the global scores per customer type was possible to optain a second approximation to build intuition around the recomendation:
 
 
-![score-recommendations](imgs/score-recommendations.png)
+![score-recommendations](imgs/score-recomendations.png)
 
 ## Algorithms and Techniques
 
@@ -166,7 +166,9 @@ And by estimating the global scores per customer type was possible to optain a s
 Algorithms and techniques used in the project are thoroughly discussed and properly justified based on the characteristics of the problem.
 -->
 
--- TEXT
+For recomendation system a powerful algorithm would be the funkSVD, the one used in the Netflix 1 MM competition, that based on latent features and rating is able to suggest movies, even for N/A values which is kind of a problem in matrix operations.
+
+The algorithm can be found on [funkSVD](notebooks/modeling/funkSVD.ipynb) and the training to build recomendation systems comes from the "Experimental Design and Recommendations" offered by Udacity.
 
 ## Benchmark
 
@@ -174,11 +176,11 @@ Algorithms and techniques used in the project are thoroughly discussed and prope
 Student clearly defines a benchmark result or threshold for comparing performances of solutions obtained.
 -->
 
--- TEXT
+The selected benchmark model for funkSVD is a collaborative filter using the Mahalanobis distance as personal preferences over euclidean or manhattan. 
 
 # Methodology
 
--- TEXT
+This project was build by following these steps:
 
 ![process](imgs/ProjectDesign.drawio.png)
 
@@ -188,7 +190,23 @@ Student clearly defines a benchmark result or threshold for comparing performanc
 All preprocessing steps have been clearly documented. Abnormalities or characteristics of the data or input that needed to be addressed have been corrected. If no data preprocessing is necessary, it has been clearly justified.
 -->
 
--- TEXT
+The preprocessing was done using the following notebooks:
+
+- [portfolio](notebooks/preprocessing/portfolio.ipyn)
+- [profile](notebooks/preprocessing/profile.ipyn)
+- [transcript](notebooks/preprocessing/transcript.ipyn)
+- [user_behaviour](notebooks/preprocessing/user_behaviour.ipyn)
+
+The feature engineering was done using the following notebooks:
+
+- [portfolio](notebooks/feature_engineering/portfolio.ipyn)
+- [profile](notebooks/feature_engineering/profile.ipyn)
+- [transcript](notebooks/feature_engineering/transcript.ipyn)
+- [user_item](notebooks/feature_engineering/user_item.ipyn)
+
+The structure of the data store looks like:
+
+![data-storage](imgs/data_storage.png)
 
 ## Implementation
 
@@ -196,15 +214,10 @@ All preprocessing steps have been clearly documented. Abnormalities or character
 The process for which metrics, algorithms, and techniques were implemented with the given datasets or input data has been thoroughly documented. Complications that occurred during the coding process are discussed.
 -->
 
--- TEXT
+The notebooks used for funkSVD and collaborative filtering can be found here:
 
-## Refinement
-
-<!--
-The process of improving upon the algorithms and techniques used is clearly documented. Both the initial and final solutions are reported, along with intermediate solutions, if necessary.
--->
-
--- TEXT
+- [funkSVD](notebooks/modeling/funkSVD.ipynb)
+- [collaborative_filtering](notebooks/modeling/funkSVD.ipynb)
 
 # Results
 
@@ -213,10 +226,6 @@ The process of improving upon the algorithms and techniques used is clearly docu
 <!--
 The final model’s qualities—such as parameters—are evaluated in detail. Some type of analysis is used to validate the robustness of the model’s solution.
 -->
-
-# Results Comparison
-
-
 
 | Metric                              | Collaborative Filters - Mahalanobis | funkSVD                         |
 |-------------------------------------|-------------------------------------|---------------------------------|
@@ -228,8 +237,18 @@ The final model’s qualities—such as parameters—are evaluated in detail. So
 | Mean Average Precision (MAP)        | 0.8108887343201155                  | 0.8843025214690233              |
 | Normalized Discounted Cumulative Gain (NDCG) | 0.9755457340548795                  | 0.9844160683366693              |
 
+
+# Results Comparison
+
 ## Justification
 
 <!--
 The final results are compared to the benchmark result or threshold with some type of statistical analysis. Justification is made as to whether the final model and solution is significant enough to have adequately solved the problem.
 -->
+
+- **Precision**: Collaborative Filters - Mahalanobis has higher precision, meaning it is more accurate when it predicts a positive class.
+- **Recall**: funkSVD has significantly higher recall, capturing almost all actual positive cases.
+- **F1-Score**: funkSVD has a much higher F1-Score, indicating a better balance between precision and recall.
+- **MAE and RMSE**: funkSVD has lower MAE and RMSE, indicating more accurate predictions.
+- **MAP and NDCG**: funkSVD has slightly higher MAP and NDCG, indicating better ranking performance.
+
