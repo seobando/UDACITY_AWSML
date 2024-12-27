@@ -192,17 +192,17 @@ All preprocessing steps have been clearly documented. Abnormalities or character
 
 The preprocessing was done using the following notebooks:
 
-- [portfolio](notebooks/preprocessing/portfolio.ipyn)
-- [profile](notebooks/preprocessing/profile.ipyn)
-- [transcript](notebooks/preprocessing/transcript.ipyn)
-- [user_behaviour](notebooks/preprocessing/user_behaviour.ipyn)
+- [portfolio](notebooks/preprocessing/portfolio.ipynb)
+- [profile](notebooks/preprocessing/profile.ipynb)
+- [transcript](notebooks/preprocessing/transcript.ipynb)
+- [user_behaviour](notebooks/preprocessing/user_behaviour.ipynb)
 
 The feature engineering was done using the following notebooks:
 
-- [portfolio](notebooks/feature_engineering/portfolio.ipyn)
-- [profile](notebooks/feature_engineering/profile.ipyn)
-- [transcript](notebooks/feature_engineering/transcript.ipyn)
-- [user_item](notebooks/feature_engineering/user_item.ipyn)
+- [portfolio](notebooks/feature_engineering/portfolio.ipynb)
+- [profile](notebooks/feature_engineering/profile.ipynb)
+- [transcript](notebooks/feature_engineering/transcript.ipynb)
+- [user_item](notebooks/feature_engineering/user_item.ipynb)
 
 The structure of the data store looks like:
 
